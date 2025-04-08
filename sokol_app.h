@@ -7123,7 +7123,7 @@ _SOKOL_PRIVATE bool _sapp_win32_update_dimensions(void) {
 _SOKOL_PRIVATE void _sapp_win32_set_fullscreen(bool fullscreen, UINT swp_flags) {
     HMONITOR monitor = MonitorFromWindow(_sapp.win32.hwnd, MONITOR_DEFAULTTONEAREST);
     MONITORINFO minfo;
-    _sapp_clear(&minfo, sizeof(minfo));
+    _sapp_clear(&minfo, sizeof(MONITORINFO));
     minfo.cbSize = sizeof(MONITORINFO);
     GetMonitorInfo(monitor, &minfo);
     const RECT mr = minfo.rcMonitor;
@@ -10689,7 +10689,7 @@ _SOKOL_PRIVATE const char* _sapp_x11_get_clipboard_string(void) {
     XEvent event;
     while (!XCheckTypedWindowEvent(_sapp.x11.display, _sapp.x11.window, SelectionNotify, &event)) {
         // Wait for event data to arrive on the X11 display socket
-        struct pollfd fd = { ConnectionNumber(_sapp.x11.display), POLLIN };
+        struct pollfd fd = { ConnectionNumber(_sapp.x11.display), POLLIN, 0 };
         while (!XPending(_sapp.x11.display)) {
             poll(&fd, 1, -1);
         }
